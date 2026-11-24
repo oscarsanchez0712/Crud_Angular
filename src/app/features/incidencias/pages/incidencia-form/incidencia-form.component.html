@@ -1,0 +1,70 @@
+<h1 class="titulo-pagina">{{ editando ? 'Editar ' + incidencia?.codigo : 'Registrar incidencia' }}</h1>
+<p class="subtitulo">{{ editando ? 'Actualiza los datos y guarda los cambios.' : 'Completa los datos para abrir una nueva incidencia.' }}</p>
+
+<div class="rejilla">
+<section class="tarjeta">
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+    <div class="campo">
+      <label for="titulo">Título</label>
+      <input id="titulo" type="text" formControlName="titulo" placeholder="Ej: Falla de red Lab 04"
+             [class.error]="invalido('titulo')" />
+      <small class="msg-error" *ngIf="invalido('titulo')">{{ error('titulo') }}</small>
+    </div>
+
+    <div class="campo">
+      <label for="descripcion">Descripción técnica</label>
+      <textarea id="descripcion" rows="4" formControlName="descripcion"
+                placeholder="Describe el problema con detalle"
+                [class.error]="invalido('descripcion')"></textarea>
+      <small class="msg-error" *ngIf="invalido('descripcion')">{{ error('descripcion') }}</small>
+    </div>
+
+    <div class="fila">
+      <div class="campo">
+        <label for="prioridad">Prioridad</label>
+        <select id="prioridad" formControlName="prioridad" [class.error]="invalido('prioridad')">
+          <option value="" disabled>Selecciona...</option>
+          <option *ngFor="let p of prioridades" [value]="p">{{ p }}</option>
+        </select>
+        <small class="msg-error" *ngIf="invalido('prioridad')">Selecciona una prioridad.</small>
+      </div>
+
+      <div class="campo">
+        <label for="estado">Estado</label>
+        <select id="estado" formControlName="estado" [class.error]="invalido('estado')">
+          <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="responsable">Responsable (técnico asignado)</label>
+      <input id="responsable" type="text" formControlName="responsable" placeholder="Nombre del técnico"
+             [class.error]="invalido('responsable')" />
+      <small class="msg-error" *ngIf="invalido('responsable')">{{ error('responsable') }}</small>
+    </div>
+
+    <p class="nota" *ngIf="editando">
+      Fecha de registro: {{ incidencia?.fecha | date: 'dd/MM/yyyy' }} (no se puede modificar)
+    </p>
+
+    <div class="acciones">
+      <a routerLink="/incidencias" class="btn btn-secundario">Cancelar</a>
+      <button type="submit" class="btn btn-primario">
+        {{ editando ? 'Guardar cambios' : 'Registrar incidencia' }}
+      </button>
+    </div>
+  </form>
+</section>
+
+<aside class="consejos">
+  <h2>Antes de guardar</h2>
+  <ul>
+    <li>Usa un título corto que se entienda solo.</li>
+    <li>En la descripción indica dónde ocurre y desde cuándo.</li>
+    <li>Asigna un técnico para que alguien dé seguimiento.</li>
+    <li>La alta prioridad es para lo que frena clases o servicios.</li>
+  </ul>
+</aside>
+</div>

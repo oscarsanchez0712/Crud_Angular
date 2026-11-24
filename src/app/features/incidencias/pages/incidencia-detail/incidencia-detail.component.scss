@@ -1,0 +1,26 @@
+.detalle { max-width: 760px; }
+.banda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 4px solid var(--borde);
+  &.p-alta { border-bottom-color: var(--alta); }
+  &.p-media { border-bottom-color: var(--media); }
+  &.p-baja { border-bottom-color: var(--baja); }
+}
+.codigo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--acento-osc); }
+.etiquetas { display: flex; gap: 8px; }
+.datos {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin: 18px 0 24px;
+  .etq { display: block; font-size: 0.78rem; color: var(--suave); }
+}
+h2 { font-size: 1rem; color: var(--tinta); margin: 0 0 6px; }
+.descripcion { margin: 0 0 26px; line-height: 1.65; }
+.acciones { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }

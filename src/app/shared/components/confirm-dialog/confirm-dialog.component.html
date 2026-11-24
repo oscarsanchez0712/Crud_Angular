@@ -1,0 +1,10 @@
+<div class="fondo" (click)="cancelar.emit()">
+  <div class="caja" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+    <h3>{{ titulo }}</h3>
+    <p>{{ mensaje }}</p>
+    <div class="acciones">
+      <button type="button" class="btn btn-secundario" (click)="cancelar.emit()">Cancelar</button>
+      <button type="button" class="btn btn-peligro" (click)="confirmar.emit()">{{ textoConfirmar }}</button>
+    </div>
+  </div>
+</div>

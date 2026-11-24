@@ -1,0 +1,97 @@
+<div class="cabecera">
+  <div>
+    <h1 class="titulo-pagina">Panel de incidencias</h1>
+    <p class="subtitulo">Registra, revisa y da seguimiento a los problemas reportados.</p>
+  </div>
+  <a routerLink="/incidencias/nueva" class="btn btn-primario">+ Nueva incidencia</a>
+</div>
+
+<div class="resumen">
+  <div class="dato">
+    <span class="numero">{{ todas.length }}</span>
+    <span>registradas</span>
+  </div>
+  <div class="dato">
+    <span class="numero">{{ abiertas }}</span>
+    <span>sin resolver</span>
+  </div>
+  <div class="dato urgente">
+    <span class="numero">{{ urgentes }}</span>
+    <span>de prioridad alta abiertas</span>
+  </div>
+</div>
+
+<section class="tarjeta">
+  <div class="pestanas" role="tablist" aria-label="Filtrar por estado">
+    <button type="button" role="tab" [class.activa]="filtros.estado === ''" (click)="elegirEstado('')">
+      Todos <span>{{ contar('') }}</span>
+    </button>
+    <button type="button" role="tab" *ngFor="let e of estados"
+            [class.activa]="filtros.estado === e" (click)="elegirEstado(e)">
+      {{ e }} <span>{{ contar(e) }}</span>
+    </button>
+  </div>
+
+  <div class="filtros">
+    <input type="search" name="texto" placeholder="Buscar por título..."
+           [(ngModel)]="filtros.texto" (ngModelChange)="aplicarFiltros()" aria-label="Buscar por título" />
+
+    <label>
+      Prioridad
+      <select name="prioridad" [(ngModel)]="filtros.prioridad" (ngModelChange)="aplicarFiltros()">
+        <option value="">Todas</option>
+        <option *ngFor="let p of prioridades" [value]="p">{{ p }}</option>
+      </select>
+    </label>
+
+    <button type="button" class="btn btn-secundario" *ngIf="hayFiltros" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+  <div class="tabla-scroll" *ngIf="visibles.length > 0; else vacio">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Título</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Responsable</th>
+          <th class="col-acciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of visibles; trackBy: trackById" [ngClass]="'p-' + i.prioridad.toLowerCase()">
+          <td><a class="codigo" [routerLink]="['/incidencias', i.id]">{{ i.codigo }}</a></td>
+          <td class="titulo">{{ i.titulo }}</td>
+          <td><app-badge [texto]="i.prioridad"></app-badge></td>
+          <td><app-badge [texto]="i.estado"></app-badge></td>
+          <td>{{ i.fecha | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ i.responsable }}</td>
+          <td class="col-acciones">
+            <a class="btn-mini" [routerLink]="['/incidencias', i.id]">Ver</a>
+            <a class="btn-mini" [routerLink]="['/incidencias', i.id, 'editar']">Editar</a>
+            <button type="button" class="btn-mini peligro" (click)="pedirConfirmacion(i)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #vacio>
+    <div class="vacio">
+      <p *ngIf="todas.length === 0">Todavía no hay incidencias. Registra la primera con el botón de arriba.</p>
+      <p *ngIf="todas.length > 0">Ninguna incidencia coincide con la búsqueda o los filtros.</p>
+    </div>
+  </ng-template>
+
+  <p class="total" *ngIf="todas.length > 0">Mostrando {{ visibles.length }} de {{ todas.length }}</p>
+</section>
+
+<app-confirm-dialog
+  *ngIf="incidenciaAEliminar"
+  titulo="Eliminar incidencia"
+  [mensaje]="'Vas a eliminar ' + incidenciaAEliminar.codigo + ' (' + incidenciaAEliminar.titulo + '). Esta acción no se puede deshacer.'"
+  (confirmar)="confirmarEliminar()"
+  (cancelar)="cancelarEliminar()">
+</app-confirm-dialog>

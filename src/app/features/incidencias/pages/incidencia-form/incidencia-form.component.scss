@@ -1,0 +1,17 @@
+.rejilla { display: grid; grid-template-columns: 1fr 280px; gap: 20px; margin-top: 22px; align-items: start; }
+.campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; flex: 1; }
+label { font-weight: 700; font-size: 0.88rem; color: var(--tinta); }
+.fila { display: flex; gap: 16px; flex-wrap: wrap; }
+.msg-error { color: var(--alta); font-size: 0.8rem; }
+.error { border-color: var(--alta) !important; }
+.nota { font-size: 0.85rem; color: var(--suave); }
+.acciones { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+.consejos {
+  background: var(--tinta);
+  color: #b7c5d9;
+  border-radius: 12px;
+  padding: 20px;
+  h2 { margin: 0 0 10px; color: #fff; font-size: 1.05rem; }
+  ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 0.9rem; }
+}
+@media (max-width: 900px) { .rejilla { grid-template-columns: 1fr; } }

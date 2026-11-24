@@ -1,0 +1,46 @@
+<section class="tarjeta detalle" *ngIf="incidencia; else noEncontrada">
+  <div class="banda" [ngClass]="'p-' + incidencia.prioridad.toLowerCase()">
+    <span class="codigo">{{ incidencia.codigo }}</span>
+    <div class="etiquetas">
+      <app-badge [texto]="incidencia.prioridad"></app-badge>
+      <app-badge [texto]="incidencia.estado"></app-badge>
+    </div>
+  </div>
+
+  <h1 class="titulo-pagina">{{ incidencia.titulo }}</h1>
+
+  <div class="datos">
+    <div>
+      <span class="etq">Responsable</span>
+      <strong>{{ incidencia.responsable }}</strong>
+    </div>
+    <div>
+      <span class="etq">Registrada el</span>
+      <strong>{{ incidencia.fecha | date: 'dd/MM/yyyy HH:mm' }}</strong>
+    </div>
+  </div>
+
+  <h2>Descripción técnica</h2>
+  <p class="descripcion">{{ incidencia.descripcion }}</p>
+
+  <div class="acciones">
+    <a routerLink="/incidencias" class="btn btn-secundario">Volver al panel</a>
+    <a [routerLink]="['/incidencias', incidencia.id, 'editar']" class="btn btn-primario">Editar</a>
+    <button type="button" class="btn btn-peligro" (click)="confirmando = true">Eliminar</button>
+  </div>
+</section>
+
+<ng-template #noEncontrada>
+  <section class="tarjeta">
+    <p>No encontramos esa incidencia. Puede que ya se haya eliminado.</p>
+    <a routerLink="/incidencias" class="btn btn-primario">Volver al panel</a>
+  </section>
+</ng-template>
+
+<app-confirm-dialog
+  *ngIf="confirmando && incidencia"
+  titulo="Eliminar incidencia"
+  [mensaje]="'Vas a eliminar ' + incidencia.codigo + '. Esta acción no se puede deshacer.'"
+  (confirmar)="eliminar()"
+  (cancelar)="confirmando = false">
+</app-confirm-dialog>
